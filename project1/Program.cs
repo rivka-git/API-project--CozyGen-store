@@ -32,7 +32,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<myDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Tehila"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Rivka"));
 });
 
 builder.Services.AddControllers();

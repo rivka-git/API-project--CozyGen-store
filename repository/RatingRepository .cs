@@ -16,7 +16,7 @@ namespace Repository
 
         public async Task<Rating> AddRating(Rating newRating)
         {
-            string connectionString = _configuration.GetConnectionString("Tehila");
+            string connectionString = _configuration.GetConnectionString("Rivka");
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
