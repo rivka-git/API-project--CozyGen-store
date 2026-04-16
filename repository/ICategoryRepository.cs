@@ -1,5 +1,5 @@
 ﻿
-using Repository.Models;
+using Model;
 
 namespace Repository
 {
@@ -10,3 +10,4 @@ namespace Repository
         Task<Category> AddNewCategory(Category category);
   }
 }
+

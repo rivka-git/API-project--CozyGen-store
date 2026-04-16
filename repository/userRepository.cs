@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-using Repository.Models;
+using Model;
 using System.Collections.Specialized;
 using System.Reflection.PortableExecutable;
 using System.Text.Json;
@@ -53,3 +53,4 @@ namespace Repository
         }
     }
 }
+

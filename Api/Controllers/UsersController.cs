@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Specialized;
 using System.Text.Json;
 using Services;
-using static project1.Controllers.Userscontroller;
+using static Api.Controllers.Userscontroller;
 using Dto;
-using Repository.Models;
+using Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace project1.Controllers
+namespace Api.Controllers
 {
 
     [Route("api/[controller]")]

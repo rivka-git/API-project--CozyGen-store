@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Repository;
-using Repository.Models;
+using Model;
 using Xunit;
 
-namespace Test
+namespace Tests
 {
     public class ProductRepositoryUnitTests
     {

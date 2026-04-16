@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Repository;
-using Repository.Models;
+using Model;
 namespace Repository
 {
   public class CategoryRepository : ICategoryRepository
@@ -48,3 +48,4 @@ namespace Repository
 
     }
 }
+

@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace Test
+namespace Tests
 {
     internal class TestAsyncQueryProvider<TEntity> : IAsyncQueryProvider
     {

@@ -2,7 +2,7 @@
 using Dto;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
-using Repository.Models;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

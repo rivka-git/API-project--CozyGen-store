@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Repository.Models;
+using Model;
+using Repository;
 using System;
 using System.Linq;
 
-namespace Test
+namespace Tests
 {
     public class DatabaseFixture : IDisposable
     {

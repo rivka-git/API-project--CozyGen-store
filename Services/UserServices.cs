@@ -2,7 +2,7 @@
 using Dto;
 using Microsoft.EntityFrameworkCore;
 using Repository;
-using Repository.Models;
+using Model;
 using System.Text.Json;
 namespace Services
 {

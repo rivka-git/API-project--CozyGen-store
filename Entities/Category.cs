@@ -6,13 +6,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Repository.Models;
+namespace Model;
 
-[Index("Name", Name = "UQ__Styles__737584F640BD6215", IsUnique = true)]
-public partial class Style
+[Index("Name", Name = "UQ__Categori__737584F6F8D67F16", IsUnique = true)]
+public partial class Category
 {
     [Key]
-    public int StyleId { get; set; }
+    public int CategoryId { get; set; }
 
     [Required]
     [StringLength(150)]
@@ -24,6 +24,6 @@ public partial class Style
     [StringLength(500)]
     public string ImageUrl { get; set; }
 
-    [InverseProperty("Style")]
-    public virtual ICollection<ProductStyle> ProductStyles { get; set; } = new List<ProductStyle>();
+    [InverseProperty("Category")]
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

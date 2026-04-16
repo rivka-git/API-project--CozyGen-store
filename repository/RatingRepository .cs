@@ -1,7 +1,7 @@
-﻿using Entities;
+﻿using Model;
 using Microsoft.Data.SqlClient; 
 using Microsoft.Extensions.Configuration;
-using Repository.Models;
+using Model;
 using System.Data;
 
 namespace Repository

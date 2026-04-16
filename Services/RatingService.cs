@@ -1,4 +1,4 @@
-﻿using Entities;
+﻿using Model;
 using Repository;
 using System;
 using System.Collections.Generic;

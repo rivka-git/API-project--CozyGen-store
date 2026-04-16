@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Services;
-using Entities;
+using Model;
 namespace Api.Middlware
 {
     // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project

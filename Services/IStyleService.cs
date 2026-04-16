@@ -1,5 +1,5 @@
 ﻿using Dto;
-using Repository.Models;
+using Model;
 
 namespace Services
 {

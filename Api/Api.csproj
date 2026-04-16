@@ -10,6 +10,8 @@
     <None Include="M:\‏‏רבקה ותהילה - עותק\project1\.editorconfig" />
   </ItemGroup>
 
+	
+	
   <ItemGroup>
     <EditorConfigFiles Remove="M:\‏‏רבקה ותהילה - עותק\project1\.editorconfig" />
   </ItemGroup>
@@ -33,3 +35,5 @@
   </ItemGroup>
 
 </Project>
+
+

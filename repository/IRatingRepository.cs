@@ -1,4 +1,4 @@
-﻿using Entities;
+﻿using Model;
 
 namespace Repository
 {

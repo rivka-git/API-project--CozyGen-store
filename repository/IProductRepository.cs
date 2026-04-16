@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using Repository.Models;
+using Model;
 
 namespace Repository
 {
