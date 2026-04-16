@@ -16,18 +16,18 @@ namespace Api.Controllers
         {
             _s = i;
             _logger = logger;
-            _userService = userService; 
+            _userService = userService;
         }
 
         // GET: api/<StyleController>
         [HttpGet]
-        public async Task<IEnumerable<DtoSyle_id_name>> Get()
+        public async Task<IEnumerable<DtoStyleIdName>> Get()
         {
             return await _s.GetStyles();
         }
 
         [HttpPost]
-        public async Task<ActionResult<DtoSyle_id_name>> Post(
+        public async Task<ActionResult<DtoStyleIdName>> Post(
             [FromBody] DtoStyleAll StyleDto,
             [FromHeader] int userId,
             [FromHeader] string password)
@@ -38,7 +38,7 @@ namespace Api.Controllers
                 return Forbid("גישה נדחתה: דרושות הרשאות מנהל להוספת סגנון");
             }
 
-            DtoSyle_id_name res = await _s.AddNewStyle(StyleDto);
+            DtoStyleIdName res = await _s.AddNewStyle(StyleDto);
             if (res != null)
             {
                 return Ok(res);
@@ -47,7 +47,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<DtoSyle_id_name>> Delete(
+        public async Task<ActionResult<DtoStyleIdName>> Delete(
             int id,
             [FromHeader] int userId,
             [FromHeader] string password)
@@ -58,7 +58,7 @@ namespace Api.Controllers
                 return Forbid("גישה נדחתה: דרושות הרשאות מנהל למחיקת סגנון");
             }
 
-            DtoSyle_id_name res = await _s.Delete(id);
+            DtoStyleIdName res = await _s.Delete(id);
 
             if (res != null)
             {

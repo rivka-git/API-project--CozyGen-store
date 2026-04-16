@@ -10,39 +10,42 @@ namespace Repository
 {
     public class StyleRepository : IStyleRepository
     {
-        myDBContext dbContext;
+        private readonly myDBContext _dbContext;
+
         public StyleRepository(myDBContext dbContext)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
         }
+
         public async Task<List<Style>> GetStyles()
         {
-            return await dbContext.Styles.ToListAsync();
+            return await _dbContext.Styles.ToListAsync();
         }
 
         public async Task<Style> AddNewStyle(Style style)
         {
-
-            await dbContext.Styles.AddAsync(style);
-            await dbContext.SaveChangesAsync();
+            await _dbContext.Styles.AddAsync(style);
+            await _dbContext.SaveChangesAsync();
             return style;
         }
+
         public async Task<Style> Delete(int id)
         {
-            var style = await dbContext.Styles
+            var style = await _dbContext.Styles
                 .Include(p => p.ProductStyles)
                 .FirstOrDefaultAsync(p => p.StyleId == id);
 
             if (style != null)
             {
-                dbContext.ProductStyles.RemoveRange(style.ProductStyles);
-                dbContext.Styles.Remove(style);
-                await dbContext.SaveChangesAsync();
+                _dbContext.ProductStyles.RemoveRange(style.ProductStyles);
+                _dbContext.Styles.Remove(style);
+                await _dbContext.SaveChangesAsync();
             }
+
             return style;
         }
 
-      
+
 
     }
 }

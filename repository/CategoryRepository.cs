@@ -8,41 +8,44 @@ using Repository;
 using Model;
 namespace Repository
 {
-  public class CategoryRepository : ICategoryRepository
-  {
-    myDBContext dbContext;
-    public CategoryRepository(myDBContext dbContext)
+    public class CategoryRepository : ICategoryRepository
     {
-      this.dbContext = dbContext;
-    }
-    public async Task<List<Category>> GetCategories()
-    {
-      return await dbContext.Categories.ToListAsync();
-    }
-    public async Task<Category> AddNewCategory(Category category)
-        {
+        private readonly myDBContext _dbContext;
 
-            await dbContext.Categories.AddAsync(category);
-            await dbContext.SaveChangesAsync();
+        public CategoryRepository(myDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task<List<Category>> GetCategories()
+        {
+            return await _dbContext.Categories.ToListAsync();
+        }
+
+        public async Task<Category> AddNewCategory(Category category)
+        {
+            await _dbContext.Categories.AddAsync(category);
+            await _dbContext.SaveChangesAsync();
             return category;
         }
+
         public async Task<Category> Delete(int id)
         {
-            
-            var category = await dbContext.Categories
-                .Include(c => c.Products)
-                .FirstOrDefaultAsync(c => c.CategoryId == id);
+            var category = await _dbContext.Categories
+    .Include(c => c.Products)
+    .FirstOrDefaultAsync(c => c.CategoryId == id);
 
             if (category != null)
             {
                 if (category.Products != null && category.Products.Any())
                 {
-                    dbContext.Products.RemoveRange(category.Products);
+                    _dbContext.Products.RemoveRange(category.Products);
                 }
-                dbContext.Categories.Remove(category);
+                _dbContext.Categories.Remove(category);
 
-                await dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
+
             return category;
         }
 

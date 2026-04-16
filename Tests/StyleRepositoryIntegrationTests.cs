@@ -1,4 +1,4 @@
-using Repository;
+﻿using Repository;
 using Model;
 using Xunit;
 
@@ -19,7 +19,7 @@ namespace Tests
         {
             var style1 = new Style { Name = "Modern", Description = "Modern style", ImageUrl = "modern.jpg" };
             var style2 = new Style { Name = "Classic", Description = "Classic style", ImageUrl = "classic.jpg" };
-            
+
             _fixture.Context.Styles.Add(style1);
             _fixture.Context.Styles.Add(style2);
             await _fixture.Context.SaveChangesAsync();
@@ -44,13 +44,13 @@ namespace Tests
         [Fact]
         public async Task GetStyles_ReturnsStyles_WithAllProperties()
         {
-            var style = new Style 
-            { 
-                Name = "Minimalist", 
-                Description = "Minimalist design with clean lines", 
-                ImageUrl = "minimalist.jpg" 
+            var style = new Style
+            {
+                Name = "Minimalist",
+                Description = "Minimalist design with clean lines",
+                ImageUrl = "minimalist.jpg"
             };
-            
+
             _fixture.Context.Styles.Add(style);
             await _fixture.Context.SaveChangesAsync();
 
@@ -73,7 +73,7 @@ namespace Tests
                 new Style { Name = "Rustic", Description = "Rustic style", ImageUrl = "rustic.jpg" },
                 new Style { Name = "Industrial", Description = "Industrial style", ImageUrl = "industrial.jpg" }
             };
-            
+
             _fixture.Context.Styles.AddRange(styles);
             await _fixture.Context.SaveChangesAsync();
 
@@ -92,7 +92,7 @@ namespace Tests
         {
             var style1 = new Style { Name = "Scandinavian", Description = "Scandinavian style", ImageUrl = "scandinavian.jpg" };
             var style2 = new Style { Name = "Bohemian", Description = "Bohemian style", ImageUrl = "bohemian.jpg" };
-            
+
             _fixture.Context.Styles.AddRange(style1, style2);
             await _fixture.Context.SaveChangesAsync();
 

@@ -11,36 +11,39 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-  public class CategoryService : ICategoryService
-  {
-        ICategoryRepository _r;
-        IMapper _mapper;
-        IPasswordService _passwordService;
-        public CategoryService(ICategoryRepository i, IMapper mapperr)
-        {
-            _r = i;
-            _mapper = mapperr;
-        }
-        public async Task<IEnumerable<DtoCategory_Name_Id>> GetCategories()
-            {
+    public class CategoryService : ICategoryService
+    {
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-            var u = await _r.GetCategories();
-            var r = _mapper.Map<List<Category>,List< DtoCategory_Name_Id>>(u);
-            return r;
-            }
-        public async Task<DtoCategory_Name_Id> AddNewCategory(DtocategoryAll newCategory)
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
+        {
+            _categoryRepository = categoryRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<DtoCategoryNameId>> GetCategories()
+        {
+            var categories = await _categoryRepository.GetCategories();
+            var categoryDtos = _mapper.Map<List<Category>, List<DtoCategoryNameId>>(categories);
+            return categoryDtos;
+        }
+
+        public async Task<DtoCategoryNameId> AddNewCategory(DtoCategoryAll newCategory)
         {
             var categoryEntity = _mapper.Map<Category>(newCategory);
 
-            var savedCategory = await _r.AddNewCategory(categoryEntity);
-            return _mapper.Map<DtoCategory_Name_Id>(savedCategory);
+            var savedCategory = await _categoryRepository.AddNewCategory(categoryEntity);
+            return _mapper.Map<DtoCategoryNameId>(savedCategory);
 
         }
-        public async Task<DtoCategory_Name_Id> Delete(int id)
+
+        public async Task<DtoCategoryNameId> Delete(int id)
         {
-            var savedCategory = await _r.Delete(id);
-            return _mapper.Map<DtoCategory_Name_Id>(savedCategory);
+            var savedCategory = await _categoryRepository.Delete(id);
+            return _mapper.Map<DtoCategoryNameId>(savedCategory);
 
         }
     }
 }
+

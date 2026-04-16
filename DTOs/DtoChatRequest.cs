@@ -1,4 +1,4 @@
-namespace Dto
+﻿namespace Dto
 {
     public class DtoChatRequest
     {

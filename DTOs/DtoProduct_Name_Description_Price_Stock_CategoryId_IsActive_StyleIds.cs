@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Dto
 {
-    public record DtoProduct_Name_Description_Price_Stock_CategoryId_IsActive_StyleIds(
+    public record DtoProductNameDescriptionPriceStockCategoryIdIsActiveStyleIds(
         string Name,
         string Description,
         decimal Price,
         string FrontImageUrl,
         string BackImageUrl,
-        List<DtoSyle_id_name> ProductStyles,
+        List<DtoStyleIdName> ProductStyles,
         int Stock,
         int CategoryId,
         bool IsActive
@@ -25,7 +25,7 @@ namespace Dto
 
 
 
-//public class DtoProduct_Name_Description_Price_Stock_CategoryId_IsActive_StyleIds
+//public class DtoProductNameDescriptionPriceStockCategoryIdIsActiveStyleIds
 //{
 //    [Required]
 //    [StringLength(200)]
@@ -43,8 +43,9 @@ namespace Dto
 
 //    [StringLength(500)]
 //    public string BackImageUrl { get; set; }
-//    public List<DtoSyle_id_name> ProductStyles { get; set; } = new List<DtoSyle_id_name>();
+//    public List<DtoStyleIdName> ProductStyles { get; set; } = new List<DtoStyleIdName>();
 //}
+
 
 
 

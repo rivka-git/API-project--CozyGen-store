@@ -11,17 +11,18 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-  public class ProductService : IProductService
-  {
-    IProductRepository _r;
-    IMapper _mapper;
-        public ProductService(IProductRepository i, IMapper mapper)
-            {
-                  _r = i;
-                 _mapper= mapper;
-             }
+    public class ProductService : IProductService
+    {
+        private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
-        public async Task<Dto_result_product> GetProducts(
+        public ProductService(IProductRepository productRepository, IMapper mapper)
+        {
+            _productRepository = productRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<DtoResultProduct> GetProducts(
      [FromQuery] int position,
      [FromQuery] int skip,
      [FromQuery] string? desc,
@@ -30,15 +31,16 @@ namespace Services
      [FromQuery] int?[] categoryIds,
      [FromQuery] int?[] styleIds)
         {
-            var u = await _r.getProducts(position, skip, desc, minPrice, maxPrice, categoryIds, styleIds);
-            var r = _mapper.Map<List<Product>, List<DtoProduct_Id_Name_Category_Price_Desc_Image>>(u.Items);
-            var n = new Dto_result_product(
-                r,
-                u.TotalCount
+            var productResult = await _productRepository.GetProducts(position, skip, desc, minPrice, maxPrice, categoryIds, styleIds);
+            var products = _mapper.Map<List<Product>, List<DtoProductIdNameCategoryPriceDescImage>>(productResult.Items);
+            var response = new DtoResultProduct(
+                products,
+                productResult.TotalCount
             );
-            return n;
+            return response;
         }
-        public async Task<DtoProduct_Id_Name_Category_Price_Desc_Image> AddNewProduct(DtoProduct_Name_Description_Price_Stock_CategoryId_IsActive_StyleIds productDto)
+
+        public async Task<DtoProductIdNameCategoryPriceDescImage> AddNewProduct(DtoProductNameDescriptionPriceStockCategoryIdIsActiveStyleIds productDto)
         {
             var productEntity = _mapper.Map<Product>(productDto);
             productEntity.ProductStyles = productDto.ProductStyles.Select(id => new ProductStyle
@@ -46,21 +48,24 @@ namespace Services
                 StyleId = id.StyleId
             }).ToList();
 
-            var savedProduct = await _r.AddNewProduct(productEntity);
-            return _mapper.Map<DtoProduct_Id_Name_Category_Price_Desc_Image>(savedProduct);
+            var savedProduct = await _productRepository.AddNewProduct(productEntity);
+            return _mapper.Map<DtoProductIdNameCategoryPriceDescImage>(savedProduct);
         }
-        public async Task<DtoProduct_Id_Name_Category_Price_Desc_Image> GetById(
+
+        public async Task<DtoProductIdNameCategoryPriceDescImage> GetById(
         int id)
         {
-            Product p = await _r.GetById(id);
-            return _mapper.Map<Product, DtoProduct_Id_Name_Category_Price_Desc_Image>(p);
+            Product product = await _productRepository.GetById(id);
+            return _mapper.Map<Product, DtoProductIdNameCategoryPriceDescImage>(product);
 
         }
-        public async Task<DtoProduct_Id_Name_Category_Price_Desc_Image>  Delete(int id)
+
+        public async Task<DtoProductIdNameCategoryPriceDescImage> Delete(int id)
         {
-            var savedProduct = await _r.Delete(id);
-            return _mapper.Map<DtoProduct_Id_Name_Category_Price_Desc_Image>(savedProduct);
+            var savedProduct = await _productRepository.Delete(id);
+            return _mapper.Map<DtoProductIdNameCategoryPriceDescImage>(savedProduct);
 
         }
     }
 }
+

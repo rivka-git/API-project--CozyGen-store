@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using Repository;
 using Model;
@@ -17,16 +17,16 @@ namespace Tests
             mockContext.Setup(c => c.SaveChangesAsync(default)).ReturnsAsync(1);
 
             var repository = new ProductRepository(mockContext.Object);
-            var newProduct = new Product 
-            { 
-                Name = "New Product", 
-                Price = 250, 
-                CategoryId = 1, 
-                Description = "New product description", 
-                Stock = 15, 
-                IsActive = true 
+            var newProduct = new Product
+            {
+                Name = "New Product",
+                Price = 250,
+                CategoryId = 1,
+                Description = "New product description",
+                Stock = 15,
+                IsActive = true
             };
-            
+
             var result = await repository.AddNewProduct(newProduct);
 
             mockSet.Verify(m => m.AddAsync(newProduct, default), Times.Once);

@@ -6,6 +6,6 @@ namespace Services
 {
     public interface IPasswordService
     {
-        int getStrengthByPassword(string p);
+        int GetStrengthByPassword(string password);
     }
 }

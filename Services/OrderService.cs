@@ -13,31 +13,32 @@ namespace Services
 {
     public class OrderService : IOrderService
     {
-        IOrderRepository _r;
-        IMapper _mapper;
-        ILogger<OrderService> _logger;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
+        private readonly ILogger<OrderService> _logger;
 
-        public OrderService(IOrderRepository i, IMapper mapperr, ILogger<OrderService> logger)
+        public OrderService(IOrderRepository orderRepository, IMapper mapper, ILogger<OrderService> logger)
         {
-            _mapper = mapperr;
-            _r = i;
+            _mapper = mapper;
+            _orderRepository = orderRepository;
             _logger = logger;
         }
-        public async Task<List<DtoOrder_Id_UserId_Date_Sum_OrderItems?>> GetOrdersUser(int id)
-        {
 
-            var o = await _r.GetOrdersUser(id);
-            var r = _mapper.Map<List<Order>, List<DtoOrder_Id_UserId_Date_Sum_OrderItems>>(o);
-            return r;
-        }
-        public async Task<DtoOrder_Id_UserId_Date_Sum_OrderItems?> GetOrderById(int id)
+        public async Task<List<DtoOrderIdUserIdDateSumOrderItems?>> GetOrdersUser(int id)
         {
-            Order o = await _r.GetOrderById(id);
-            return _mapper.Map<Order, DtoOrder_Id_UserId_Date_Sum_OrderItems>(o);
-
+            var orders = await _orderRepository.GetOrdersUser(id);
+            var orderDtos = _mapper.Map<List<Order>, List<DtoOrderIdUserIdDateSumOrderItems>>(orders);
+            return orderDtos;
         }
 
-        public async Task<DtoOrder_Id_UserId_Date_Sum_OrderItems> AddNewOrder(DtoOrder_Id_UserId_Date_Sum_OrderItems order)
+        public async Task<DtoOrderIdUserIdDateSumOrderItems?> GetOrderById(int id)
+        {
+            Order order = await _orderRepository.GetOrderById(id);
+            return _mapper.Map<Order, DtoOrderIdUserIdDateSumOrderItems>(order);
+
+        }
+
+        public async Task<DtoOrderIdUserIdDateSumOrderItems> AddNewOrder(DtoOrderIdUserIdDateSumOrderItems order)
         {
             var calculatedTotal = order.OrderItems.Sum(item => item.PriceAtPurchase * item.Quantity);
             if (order.TotalPrice != calculatedTotal)
@@ -48,10 +49,11 @@ namespace Services
                     calculatedTotal);
             }
 
-            var ooo = _mapper.Map<DtoOrder_Id_UserId_Date_Sum_OrderItems, Order>(order);
-            Order o = await _r.AddNewOrder(ooo);
-            var oo = _mapper.Map<Order, DtoOrder_Id_UserId_Date_Sum_OrderItems>(o);
-            return oo;
+            var mappedOrder = _mapper.Map<DtoOrderIdUserIdDateSumOrderItems, Order>(order);
+            Order savedOrder = await _orderRepository.AddNewOrder(mappedOrder);
+            var orderDto = _mapper.Map<Order, DtoOrderIdUserIdDateSumOrderItems>(savedOrder);
+            return orderDto;
         }
     }
 }
+

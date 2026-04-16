@@ -10,7 +10,7 @@ using System.Text;
 namespace Dto
 {
 
-    public class DtoOrder_Id_UserId_Date_Sum_OrderItems
+    public class DtoOrderIdUserIdDateSumOrderItems
     {
         public int OrderId { get; set; }
 
@@ -27,16 +27,17 @@ namespace Dto
         public decimal TotalPrice { get; set; }
 
         [InverseProperty("Order")]
-        public virtual ICollection<DtoOrderItem_Id_OrderId_ProductId_Quantity> OrderItems { get; set; } = new List<DtoOrderItem_Id_OrderId_ProductId_Quantity>();
+        public virtual ICollection<DtoOrderItemIdOrderIdProductIdQuantity> OrderItems { get; set; } = new List<DtoOrderItemIdOrderIdProductIdQuantity>();
 
     }
 }
-//public record DtoOrder_Id_UserId_Date_Sum_OrderItems(
+//public record DtoOrderIdUserIdDateSumOrderItems(
 //    int OrderId,
 //    int UserId,
 //    DateTime OrderDate,
 //    string Status,
 //    decimal TotalPrice,
-//    ICollection<DtoOrderItem_Id_OrderId_ProductId_Quantity> OrderItems
+//    ICollection<DtoOrderItemIdOrderIdProductIdQuantity> OrderItems
 //);
+
 

@@ -5,8 +5,8 @@ namespace Services
 {
     public interface IStyleService
     {
-        Task<IEnumerable<DtoSyle_id_name>> GetStyles();
-        Task<DtoSyle_id_name> AddNewStyle(DtoStyleAll newStyle);
-        Task<DtoSyle_id_name> Delete(int id);
+        Task<IEnumerable<DtoStyleIdName>> GetStyles();
+        Task<DtoStyleIdName> AddNewStyle(DtoStyleAll newStyle);
+        Task<DtoStyleIdName> Delete(int id);
     }
 }

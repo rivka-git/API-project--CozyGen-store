@@ -6,81 +6,84 @@ using Model;
 using System.Text.Json;
 namespace Services
 {
-
-
     public class UserServices : IUserServices
     {
-        IUserRepository _r;
-        IMapper _mapper;
-        IPasswordService _passwordService;
-        public UserServices(IUserRepository i, IMapper mapperr, IPasswordService passwordService)
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+        private readonly IPasswordService _passwordService;
+
+        public UserServices(IUserRepository userRepository, IMapper mapper, IPasswordService passwordService)
         {
-            _r = i;
-            _mapper = mapperr;
+            _userRepository = userRepository;
+            _mapper = mapper;
             _passwordService = passwordService;
         }
+
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await _r.GetUsers();
+            return await _userRepository.GetUsers();
         }
-        public async Task<DtoUser_Name_Gmail_Role_Id?> GetUserById(int id)
+
+        public async Task<DtoUserNameEmailRoleId?> GetUserById(int id)
         {
-            var u = await _r.GetUserById(id);
-            var r = _mapper.Map<User, DtoUser_Name_Gmail_Role_Id>(u);
-            return r;
+            var user = await _userRepository.GetUserById(id);
+            return _mapper.Map<User, DtoUserNameEmailRoleId>(user);
         }
-        public async Task<DtoUser_Name_Gmail_Role_Id> AddNewUser(DtoUser_All user)
+
+        public async Task<DtoUserNameEmailRoleId> AddNewUser(DtoUserAll user)
         {
-            int d = _passwordService.getStrengthByPassword(user.PasswordHash);
-            if (d >= 2)
+            int passwordStrength = _passwordService.GetStrengthByPassword(user.PasswordHash);
+            if (passwordStrength >= 2)
             {
-                
-                var userEntity = _mapper.Map<DtoUser_All, User>(user);
+                var userEntity = _mapper.Map<DtoUserAll, User>(user);
                 userEntity.Role = "Customer";
-                var res = await _r.AddNewUser(userEntity);
-                var dtoUser = _mapper.Map<User, DtoUser_Name_Gmail_Role_Id>(res);
+                var savedUser = await _userRepository.AddNewUser(userEntity);
+                var dtoUser = _mapper.Map<User, DtoUserNameEmailRoleId>(savedUser);
                 return dtoUser;
             }
 
             return null;
         }
 
-        public async Task<DtoUser_Name_Gmail_Role_Id?> Login(DtoUser_Gmail_Password value)
+        public async Task<DtoUserNameEmailRoleId?> Login(DtoUserEmailPassword value)
         {
-            var a = _mapper.Map<DtoUser_Gmail_Password, User>(value);
-            var u = await _r.Login(a);
+            var loginUser = _mapper.Map<DtoUserEmailPassword, User>(value);
+            var user = await _userRepository.Login(loginUser);
 
-            if (u == null) return null;
+            if (user == null)
+            {
+                return null;
+            }
 
-            var dtoUser = _mapper.Map<User, DtoUser_Name_Gmail_Role_Id>(u);
+            var dtoUser = _mapper.Map<User, DtoUserNameEmailRoleId>(user);
             return dtoUser;
         }
-       
-        public async Task<DtoUser_Name_Gmail_Role_Id> update(int id, DtoUser_All userDto)
-        {
-           
-            int d = _passwordService.getStrengthByPassword(userDto.PasswordHash);
-            if (d < 2) return null;
 
-            var existingUser = await _r.GetUserById(id);
-            if (existingUser == null) return null;
+        public async Task<DtoUserNameEmailRoleId> Update(int id, DtoUserAll userDto)
+        {
+            int passwordStrength = _passwordService.GetStrengthByPassword(userDto.PasswordHash);
+            if (passwordStrength < 2)
+            {
+                return null;
+            }
+
+            var existingUser = await _userRepository.GetUserById(id);
+            if (existingUser == null)
+            {
+                return null;
+            }
+
             _mapper.Map(userDto, existingUser);
             existingUser.UserId = id;
-            var res = await _r.update(id, existingUser);
+            var updatedUser = await _userRepository.Update(id, existingUser);
 
-            return _mapper.Map<User, DtoUser_Name_Gmail_Role_Id>(res);
+            return _mapper.Map<User, DtoUserNameEmailRoleId>(updatedUser);
         }
-      
+
         public async Task<bool> IsAdminById(int id, string password)
         {
-           
-            var user = await _r.GetUserByIdAndPassword(id, password);
-            if (user != null && user.Role == "Admin")
-            {
-                return true;
-            }
-            return false;
+            var user = await _userRepository.GetUserByIdAndPassword(id, password);
+            return user != null && user.Role == "Admin";
         }
-
     }
 }

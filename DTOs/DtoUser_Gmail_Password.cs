@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dto
 {
-    public record DtoUser_Gmail_Password(
+    public record DtoUserEmailPassword(
         string Email,
         string PasswordHash
     );
-} 
+}
+

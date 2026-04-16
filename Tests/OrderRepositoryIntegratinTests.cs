@@ -1,4 +1,4 @@
-using Repository;
+﻿using Repository;
 using Model;
 using Xunit;
 
@@ -63,12 +63,12 @@ namespace Tests
             await _fixture.Context.SaveChangesAsync();
 
             var repository = new OrderRepository(_fixture.Context);
-            var newOrder = new Order 
-            { 
-                UserId = user.UserId, 
-                OrderDate = DateTime.Now, 
-                Status = "Pending", 
-                TotalPrice = 500 
+            var newOrder = new Order
+            {
+                UserId = user.UserId,
+                OrderDate = DateTime.Now,
+                Status = "Pending",
+                TotalPrice = 500
             };
 
             var result = await repository.AddNewOrder(newOrder);
@@ -96,11 +96,11 @@ namespace Tests
             await _fixture.Context.SaveChangesAsync();
 
             var repository = new OrderRepository(_fixture.Context);
-            var newOrder = new Order 
-            { 
-                UserId = user.UserId, 
-                OrderDate = DateTime.Now, 
-                Status = "Pending", 
+            var newOrder = new Order
+            {
+                UserId = user.UserId,
+                OrderDate = DateTime.Now,
+                Status = "Pending",
                 TotalPrice = 600,
                 OrderItems = new List<OrderItem>
                 {
@@ -163,11 +163,11 @@ namespace Tests
             await _fixture.Context.SaveChangesAsync();
 
             var repository = new OrderRepository(_fixture.Context);
-            var newOrder = new Order 
-            { 
-                UserId = user.UserId, 
-                OrderDate = DateTime.Now, 
-                Status = "Pending", 
+            var newOrder = new Order
+            {
+                UserId = user.UserId,
+                OrderDate = DateTime.Now,
+                Status = "Pending",
                 TotalPrice = 500,
                 OrderItems = new List<OrderItem>
                 {
@@ -225,7 +225,7 @@ namespace Tests
             await _fixture.Context.SaveChangesAsync();
 
             var repository = new OrderRepository(_fixture.Context);
-            
+
             var order1 = new Order { UserId = user.UserId, OrderDate = DateTime.Now, Status = "Pending", TotalPrice = 100 };
             var order2 = new Order { UserId = user.UserId, OrderDate = DateTime.Now, Status = "Completed", TotalPrice = 200 };
             var order3 = new Order { UserId = user.UserId, OrderDate = DateTime.Now, Status = "Cancelled", TotalPrice = 300 };

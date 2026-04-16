@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using Repository;
 using Model;
@@ -13,13 +13,13 @@ namespace Tests
         {
             var user = new User { UserId = 1, Email = "user@test.com", PasswordHash = "hash", FirstName = "John", LastName = "Doe", Role = "User", IsClubMember = false };
             var product = new Product { ProductId = 1, Name = "Sofa", Price = 500, CategoryId = 1, Description = "Comfortable sofa", Stock = 10, IsActive = true };
-            var order = new Order 
-            { 
-                OrderId = 1, 
-                UserId = 1, 
+            var order = new Order
+            {
+                OrderId = 1,
+                UserId = 1,
                 User = user,
-                OrderDate = DateTime.Now, 
-                Status = "Pending", 
+                OrderDate = DateTime.Now,
+                Status = "Pending",
                 TotalPrice = 500,
                 OrderItems = new List<OrderItem>
                 {
@@ -76,14 +76,14 @@ namespace Tests
             mockContext.Setup(c => c.SaveChangesAsync(default)).ReturnsAsync(1);
 
             var repository = new OrderRepository(mockContext.Object);
-            var newOrder = new Order 
-            { 
-                UserId = 1, 
-                OrderDate = DateTime.Now, 
-                Status = "Pending", 
-                TotalPrice = 500 
+            var newOrder = new Order
+            {
+                UserId = 1,
+                OrderDate = DateTime.Now,
+                Status = "Pending",
+                TotalPrice = 500
             };
-            
+
             var result = await repository.AddNewOrder(newOrder);
 
             mockSet.Verify(m => m.AddAsync(newOrder, default), Times.Once);
@@ -97,14 +97,14 @@ namespace Tests
             var user = new User { UserId = 1, Email = "user@test.com", PasswordHash = "hash", FirstName = "John", LastName = "Doe", Role = "User", IsClubMember = false };
             var product1 = new Product { ProductId = 1, Name = "Sofa", Price = 500, CategoryId = 1, Description = "Comfortable sofa", Stock = 10, IsActive = true };
             var product2 = new Product { ProductId = 2, Name = "Chair", Price = 100, CategoryId = 1, Description = "Wooden chair", Stock = 20, IsActive = true };
-            
-            var order = new Order 
-            { 
-                OrderId = 1, 
-                UserId = 1, 
+
+            var order = new Order
+            {
+                OrderId = 1,
+                UserId = 1,
                 User = user,
-                OrderDate = DateTime.Now, 
-                Status = "Pending", 
+                OrderDate = DateTime.Now,
+                Status = "Pending",
                 TotalPrice = 600,
                 OrderItems = new List<OrderItem>
                 {
@@ -140,11 +140,11 @@ namespace Tests
             mockContext.Setup(c => c.SaveChangesAsync(default)).ReturnsAsync(1);
 
             var repository = new OrderRepository(mockContext.Object);
-            var newOrder = new Order 
-            { 
-                UserId = 1, 
-                OrderDate = DateTime.Now, 
-                Status = "Pending", 
+            var newOrder = new Order
+            {
+                UserId = 1,
+                OrderDate = DateTime.Now,
+                Status = "Pending",
                 TotalPrice = 600,
                 OrderItems = new List<OrderItem>
                 {
@@ -152,7 +152,7 @@ namespace Tests
                     new OrderItem { ProductId = 2, Quantity = 1, PriceAtPurchase = 100 }
                 }
             };
-            
+
             var result = await repository.AddNewOrder(newOrder);
 
             mockSet.Verify(m => m.AddAsync(newOrder, default), Times.Once);

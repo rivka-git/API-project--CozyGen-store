@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Dto
 {
-    public record DtoProduct_Id_Name_Category_Price_Desc_Image(
+    public record DtoProductIdNameCategoryPriceDescImage(
         int ProductId,
         string Name,
         int? CategoryId,
@@ -26,7 +26,7 @@ namespace Dto
 
 
 
-//public class DtoProduct_Id_Name_Category_Price_Desc_Image
+//public class DtoProductIdNameCategoryPriceDescImage
 //{
 //    public int ProductId { get; set; }
 
@@ -52,3 +52,4 @@ namespace Dto
 //    public virtual ICollection<DtoProductStyle> ProductStyles { get; set; } = new List<DtoProductStyle>();
 
 //}
+

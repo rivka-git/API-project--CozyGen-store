@@ -2,7 +2,7 @@
 
 namespace Dto
 {
-    public record DtoUser_All(
+    public record DtoUserAll(
         int UserId,
         string Email,
         string FirstName,
@@ -32,3 +32,4 @@ namespace Dto
 //    [StringLength(255)]
 //    public string Address { get; set; }
 //}
+

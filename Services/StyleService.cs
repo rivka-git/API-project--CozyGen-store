@@ -12,32 +12,37 @@ namespace Services
 {
     public class StyleService : IStyleService
     {
-        IStyleRepository _r;
-        IMapper _mapper;
-        public StyleService(IStyleRepository i, IMapper mapperr)
+        private readonly IStyleRepository _styleRepository;
+        private readonly IMapper _mapper;
+
+        public StyleService(IStyleRepository styleRepository, IMapper mapper)
         {
-            _r = i;
-            _mapper = mapperr;
+            _styleRepository = styleRepository;
+            _mapper = mapper;
         }
-        public async Task<IEnumerable<DtoSyle_id_name>> GetStyles()
+
+        public async Task<IEnumerable<DtoStyleIdName>> GetStyles()
         {
-            var u = await _r.GetStyles();
-            var r = _mapper.Map<List<Style>, List<DtoSyle_id_name>>(u);
-            return r;
+            var styles = await _styleRepository.GetStyles();
+            var styleDtos = _mapper.Map<List<Style>, List<DtoStyleIdName>>(styles);
+            return styleDtos;
         }
-        public async Task<DtoSyle_id_name>  AddNewStyle(DtoStyleAll newStyle)
+
+        public async Task<DtoStyleIdName> AddNewStyle(DtoStyleAll newStyle)
         {
             var styleEntity = _mapper.Map<Style>(newStyle);
 
-            var savedStyle = await _r.AddNewStyle(styleEntity);
-            return _mapper.Map<DtoSyle_id_name>(savedStyle);
+            var savedStyle = await _styleRepository.AddNewStyle(styleEntity);
+            return _mapper.Map<DtoStyleIdName>(savedStyle);
 
         }
-        public async Task<DtoSyle_id_name> Delete(int id)
+
+        public async Task<DtoStyleIdName> Delete(int id)
         {
-            var savedstyle = await _r.Delete(id);
-            return _mapper.Map<DtoSyle_id_name>(savedstyle);
+            var savedStyle = await _styleRepository.Delete(id);
+            return _mapper.Map<DtoStyleIdName>(savedStyle);
 
         }
     }
 }
+

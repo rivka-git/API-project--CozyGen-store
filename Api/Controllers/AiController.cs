@@ -57,7 +57,7 @@ namespace Api.Controllers
                 var styles = await _styleService.GetStyles();
                 var categories = await _categoryService.GetCategories();
 
-               
+
                 var matchingIds = await _aiService.AnalyzeImageAsync(
                     image,
                     productResult.Products.OrderBy(x => Guid.NewGuid()),

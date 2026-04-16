@@ -1,7 +1,6 @@
 ﻿using Model;
-using Microsoft.Data.SqlClient; 
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Model;
 using System.Data;
 
 namespace Repository
@@ -20,7 +19,7 @@ namespace Repository
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-        
+
                 string query = @"INSERT INTO RATING (HOST, METHOD, [PATH], REFERER, USER_AGENT, Record_Date) 
                                 VALUES (@Host, @Method, @Path, @Referer, @UserAgent, @Date)";
 

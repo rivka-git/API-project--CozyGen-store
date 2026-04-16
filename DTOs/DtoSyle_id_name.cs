@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dto
 {
-    public record DtoSyle_id_name(
+    public record DtoStyleIdName(
         int StyleId,
         string Name,
         string Description,
@@ -17,7 +17,7 @@ namespace Dto
 
 
 
-//public class DtoSyle_id_name
+//public class DtoStyleIdName
 //{
 //    public int StyleId { get; set; }
 

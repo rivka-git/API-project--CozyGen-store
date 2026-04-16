@@ -10,18 +10,18 @@ namespace Api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;
-        private readonly IProductService _s;
-        private readonly IUserServices _userService; 
+        private readonly IProductService _productService;
+        private readonly IUserServices _userService;
 
-        public ProductController(IProductService i, ILogger<ProductController> logger, IUserServices userService)
+        public ProductController(IProductService productService, ILogger<ProductController> logger, IUserServices userService)
         {
-            _s = i;
+            _productService = productService;
             _logger = logger;
-            _userService = userService; 
+            _userService = userService;
         }
 
         [HttpGet]
-        public async Task<Dto_result_product> Gets(
+        public async Task<DtoResultProduct> GetProducts(
             [FromQuery] int position,
             [FromQuery] int skip,
             [FromQuery] string? desc,
@@ -30,23 +30,23 @@ namespace Api.Controllers
             [FromQuery] int?[] categoryIds,
             [FromQuery] int?[] styleIds)
         {
-            return await _s.GetProducts(position, skip, desc, minPrice, maxPrice, categoryIds, styleIds);
+            return await _productService.GetProducts(position, skip, desc, minPrice, maxPrice, categoryIds, styleIds);
         }
 
         [HttpPost]
-        public async Task<ActionResult<DtoProduct_Id_Name_Category_Price_Desc_Image>> Post(
-            [FromBody] DtoProduct_Name_Description_Price_Stock_CategoryId_IsActive_StyleIds productDto, 
-            [FromHeader] int userId,  
+        public async Task<ActionResult<DtoProductIdNameCategoryPriceDescImage>> Post(
+            [FromBody] DtoProductNameDescriptionPriceStockCategoryIdIsActiveStyleIds productDto,
+            [FromHeader] int userId,
             [FromHeader] string password)
         {
-            
+
             bool isAdmin = await _userService.IsAdminById(userId, password);
             if (!isAdmin)
             {
                 return Forbid("גישה נדחתה: דרושות הרשאות מנהל לביצוע פעולה זו");
             }
 
-            DtoProduct_Id_Name_Category_Price_Desc_Image res = await _s.AddNewProduct(productDto);
+            DtoProductIdNameCategoryPriceDescImage res = await _productService.AddNewProduct(productDto);
             if (res != null)
             {
                 return Ok(res);
@@ -55,19 +55,19 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<DtoProduct_Id_Name_Category_Price_Desc_Image>> Delete(
+        public async Task<ActionResult<DtoProductIdNameCategoryPriceDescImage>> Delete(
             int id,
-            [FromHeader] int userId,   
+            [FromHeader] int userId,
             [FromHeader] string password)
         {
-           
+
             bool isAdmin = await _userService.IsAdminById(userId, password);
             if (!isAdmin)
             {
                 return Forbid("גישה נדחתה: דרושות הרשאות מנהל למחיקת מוצר");
             }
 
-            DtoProduct_Id_Name_Category_Price_Desc_Image res = await _s.Delete(id);
+            DtoProductIdNameCategoryPriceDescImage res = await _productService.Delete(id);
 
             if (res != null)
             {
@@ -76,22 +76,21 @@ namespace Api.Controllers
             return NotFound($"Product with ID {id} not found");
         }
         [HttpGet("{id}")]
-        public async Task<DtoProduct_Id_Name_Category_Price_Desc_Image> Get(int id)
+        public async Task<DtoProductIdNameCategoryPriceDescImage> Get(int id)
         {
-            return await _s.GetById(id);
+            return await _productService.GetById(id);
         }
 
-        // ===== נוסף עבור הקריאה ל-AI - מחזיר מוצרים לפי רשימת IDs =====
         [HttpGet("by-ids")]
-        public async Task<List<DtoProduct_Id_Name_Category_Price_Desc_Image>> GetByIds([FromQuery] int[] ids)
+        public async Task<List<DtoProductIdNameCategoryPriceDescImage>> GetByIds([FromQuery] int[] ids)
         {
-            var products = new List<DtoProduct_Id_Name_Category_Price_Desc_Image>();
-            
+            var products = new List<DtoProductIdNameCategoryPriceDescImage>();
+
             foreach (var id in ids)
             {
                 try
                 {
-                    var product = await _s.GetById(id);
+                    var product = await _productService.GetById(id);
                     if (product != null)
                         products.Add(product);
                 }
@@ -100,11 +99,10 @@ namespace Api.Controllers
                     // אם מוצר לא נמצא, פשוט נדלג עליו
                 }
             }
-            
+
             return products;
         }
 
-        // ===== נוסף עבור העלאת תמונות למנהל - התחלה =====
         [HttpPost("upload")]
         public async Task<IActionResult> UploadProductWithImages(
             [FromHeader] int userId,
@@ -141,19 +139,19 @@ namespace Api.Controllers
                 using (var stream = new FileStream(Path.Combine(uploadsFolder, backFileName), FileMode.Create))
                     await backImage.CopyToAsync(stream);
 
-                var productDto = new DtoProduct_Name_Description_Price_Stock_CategoryId_IsActive_StyleIds(
+                var productDto = new DtoProductNameDescriptionPriceStockCategoryIdIsActiveStyleIds(
                     name,
                     description,
                     price,
                     $"/uploads/products/{frontFileName}",
                     $"/uploads/products/{backFileName}",
-                    new List<DtoSyle_id_name>(),
+                    new List<DtoStyleIdName>(),
                     0,
                     categoryId,
                     true
                 );
 
-                var result = await _s.AddNewProduct(productDto);
+                var result = await _productService.AddNewProduct(productDto);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -162,6 +160,5 @@ namespace Api.Controllers
                 return StatusCode(500, new { message = "שגיאה בהעלאת התמונות", error = ex.Message });
             }
         }
-        // ===== נוסף עבור העלאת תמונות למנהל - סוף =====
     }
 }

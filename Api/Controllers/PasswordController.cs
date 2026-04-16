@@ -9,30 +9,18 @@ namespace Api.Controllers
     [ApiController]
     public class PasswordController : ControllerBase
     {
-        IPasswordService _p;
-        ILogger<PasswordController> _logger;
-        public PasswordController(IPasswordService ip, ILogger<PasswordController> logger)
-        {
-            _p = ip;
-            _logger = logger;
-        }
+        private readonly IPasswordService _passwordService;
 
-        //// GET api/<PasswordController>/5
-        //[HttpGet("{id}")]
-        //public DtoPassword_Password_Strength Get(PassWord p)
-        //{
-        //    return _p.getStrengthByPassword(p);
-        //}
+        public PasswordController(IPasswordService passwordService, ILogger<PasswordController> logger)
+        {
+            _passwordService = passwordService;
+        }
 
         [HttpPost]
-        
-        public int Post([FromBody] string p)
+
+        public int Post([FromBody] string password)
         {
-            return _p.getStrengthByPassword(p);
+            return _passwordService.GetStrengthByPassword(password);
         }
-
-
-     
-     
     }
 }

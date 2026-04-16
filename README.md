@@ -12,12 +12,12 @@ It follows REST principles and is structured for maintainability, scalability, a
 
 The solution is organized into multiple projects with clear responsibility boundaries:
 
-- `project1` (`Api`) – Controllers, middleware, application startup
-- `Services` – Business logic and orchestration
-- `repository` – Data access and persistence
-- `ClassLibrary1` (`Dto`) – DTO contracts for API/service communication
-- `User` (`Model`) – Domain/entity models
-- `Tests` – Automated unit and integration tests
+- `Api` - Controllers, middleware, application startup
+- `Services` - Business logic and orchestration
+- `Repository` - Data access and persistence
+- `DTOs` - DTO contracts for API/service communication
+- `Entities` - Domain/entity models
+- `Tests` - Automated unit and integration tests
 
 ### Dependency Injection & Decoupling
 
@@ -49,8 +49,8 @@ Environment and runtime settings are externalized via `appsettings` files (for e
 
 The `Tests` project includes:
 
-- `Unit Tests` – validate isolated business and repository behaviors
-- `Integration Tests` – validate end-to-end data access and component integration
+- `Unit Tests` - validate isolated business and repository behaviors
+- `Integration Tests` - validate end-to-end data access and component integration
 
 ## Technology Stack
 
@@ -66,7 +66,7 @@ The `Tests` project includes:
 
 1. Configure connection strings and required settings in `appsettings.json` / environment-specific files.
 2. Build the solution.
-3. Run the `Api` project (`project1`).
+3. Run the `Api` project (`Api`).
 4. Use Swagger/OpenAPI in development to test endpoints.
 
 ---

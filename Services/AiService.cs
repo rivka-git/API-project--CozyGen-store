@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -20,10 +20,10 @@ namespace Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
         private static readonly Dictionary<string, List<object>> _conversationHistory = new();
-        
+
         private readonly string _groqApiKey;
         private readonly string _groqApiUrl;
-        
+
         private const string SystemPrompt = @"
 את נציגת שירות מקצועית של COZYGEN - חנות רהיטים ועיצוב פנים.
 
@@ -68,10 +68,10 @@ namespace Services
             _orderService = orderService;
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
-            
+
             _groqApiKey = _configuration["GROQ_API_KEY"] ?? throw new InvalidOperationException("GROQ_API_KEY not found in configuration");
             _groqApiUrl = _configuration["GROQ_API_URL"] ?? "https://api.groq.com/openai/v1/chat/completions";
-            
+
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_groqApiKey}");
         }
 
@@ -84,21 +84,21 @@ namespace Services
             var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "אורח";
 
             var productsResult = await _productService.GetProducts(0, 20, null, null, null, null, null);
-            var productInfo = string.Join("\n", productsResult.Products.Take(20).Select(p => 
+            var productInfo = string.Join("\n", productsResult.Products.Take(20).Select(p =>
                 $"- {p.Name}: {p.Price}₪"));
-            
+
             var userOrdersInfo = "";
             if (!string.IsNullOrEmpty(userId) && int.TryParse(userId, out int userIdInt))
             {
                 var orders = await _orderService.GetOrdersUser(userIdInt);
                 if (orders != null && orders.Any())
                 {
-                    userOrdersInfo = "\n\nהזמנות של הלקוח:\n" + 
-                        string.Join("\n", orders.Where(o => o != null).Take(5).Select(o => 
+                    userOrdersInfo = "\n\nהזמנות של הלקוח:\n" +
+                        string.Join("\n", orders.Where(o => o != null).Take(5).Select(o =>
                             $"- הזמנה #{o!.OrderId}: {o.TotalPrice}₪, תאריך: {o.OrderDate:dd/MM/yyyy}"));
                 }
             }
-            
+
             var enhancedPrompt = SystemPrompt + $"\n\nשם הלקוח: {userName}\n\nמוצרים זמינים:\n{productInfo}{userOrdersInfo}";
 
             var sessionId = userId ?? "guest";
@@ -118,7 +118,7 @@ namespace Services
                 messages = _conversationHistory[sessionId].ToArray()
             };
 
-            try 
+            try
             {
                 var json = JsonSerializer.Serialize(requestBody);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -130,14 +130,14 @@ namespace Services
 
                 using var doc = JsonDocument.Parse(responseString);
                 var answer = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
-                
+
                 _conversationHistory[sessionId].Add(new { role = "assistant", content = answer });
-                
+
                 if (_conversationHistory[sessionId].Count > 21)
                 {
                     _conversationHistory[sessionId].RemoveRange(1, 2);
                 }
-                
+
                 return new DtoChatResponse { Response = answer ?? "", Category = "כללי" };
             }
             catch
@@ -148,17 +148,18 @@ namespace Services
 
         public async Task<List<int>> AnalyzeImageAsync(
             IFormFile image,
-            IEnumerable<DtoProduct_Id_Name_Category_Price_Desc_Image> allProducts,
-            IEnumerable<DtoSyle_id_name> styles,
-            IEnumerable<DtoCategory_Name_Id> categories)
+            IEnumerable<DtoProductIdNameCategoryPriceDescImage> allProducts,
+            IEnumerable<DtoStyleIdName> styles,
+            IEnumerable<DtoCategoryNameId> categories)
         {
             if (image == null) return new List<int>();
 
-     
+
             var stylesContext = string.Join(", ", styles.Select(s => $"{{id:{s.StyleId}, name:'{s.Name}'}}"));
             var categoriesContext = string.Join(", ", categories.Select(c => $"{{id:{c.CategoryId}, name:'{c.Name}'}}"));
 
-            var productListContext = string.Join(", ", allProducts.Select(p => {
+            var productListContext = string.Join(", ", allProducts.Select(p =>
+            {
                 var sIds = p.ProductStyles != null
                            ? string.Join(",", p.ProductStyles.Select(ps => ps.StyleId))
                            : "";
@@ -166,12 +167,12 @@ namespace Services
                 return $"{{id:{p.ProductId}, name:'{p.Name}', desc:'{p.Description}', catId:{p.CategoryId}, styleIds:[{sIds}]}}";
             }));
 
-          
+
             using var ms = new MemoryStream();
             await image.CopyToAsync(ms);
             var base64Image = Convert.ToBase64String(ms.ToArray());
 
-            
+
             var prompt = $@"
                 Act as an Interior Design Expert. 
                 Styles: [{stylesContext}]
@@ -186,7 +187,7 @@ namespace Services
                 If the image is not a room image return empty array.
                 Return ONLY JSON: {{ ""productIds"": [1, 2, 3] }}";
 
-          
+
             var requestBody = new
             {
                 model = "meta-llama/llama-4-scout-17b-16e-instruct",

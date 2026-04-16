@@ -10,23 +10,25 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-  public class ProductRepository : IProductRepository
-  {
-    myDBContext dbContext;
-    public ProductRepository(myDBContext dbContext)
+    public class ProductRepository : IProductRepository
     {
-      this.dbContext = dbContext;
-    }
-        public async Task<(List<Product> Items, int TotalCount)> getProducts(
-           [FromQuery] int position,
-           [FromQuery] int skip,
-           [FromQuery] string? desc,
-           [FromQuery] int? minPrice,
-           [FromQuery] int? maxPrice,
-           [FromQuery] int?[] categoryIds,
-           [FromQuery] int?[] styleIds)
+        private readonly myDBContext _dbContext;
+
+        public ProductRepository(myDBContext dbContext)
         {
-            var query = dbContext.Products.AsQueryable();
+            _dbContext = dbContext;
+        }
+
+        public async Task<(List<Product> Items, int TotalCount)> GetProducts(
+   [FromQuery] int position,
+   [FromQuery] int skip,
+   [FromQuery] string? desc,
+   [FromQuery] int? minPrice,
+   [FromQuery] int? maxPrice,
+   [FromQuery] int?[] categoryIds,
+   [FromQuery] int?[] styleIds)
+        {
+            var query = _dbContext.Products.AsQueryable();
 
             query = query.Where(product =>
                 (desc == null || product.Description.Contains(desc))
@@ -52,28 +54,30 @@ namespace Repository
         }
         public async Task<Product> GetById(int id)
         {
-            return await dbContext.Products.FirstOrDefaultAsync(p => p.ProductId == id);
+            return await _dbContext.Products.FirstOrDefaultAsync(p => p.ProductId == id);
         }
+
         public async Task<Product> AddNewProduct(Product product)
         {
-
-            await dbContext.Products.AddAsync(product);
-            await dbContext.SaveChangesAsync();
+            await _dbContext.Products.AddAsync(product);
+            await _dbContext.SaveChangesAsync();
             return product;
         }
+
         public async Task<Product> Delete(int id)
         {
-            var product = await dbContext.Products
+            var product = await _dbContext.Products
                 .Include(p => p.ProductStyles)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.ProductId == id);
 
             if (product != null)
             {
-                dbContext.ProductStyles.RemoveRange(product.ProductStyles);
-                dbContext.Products.Remove(product);
-                await dbContext.SaveChangesAsync();
+                _dbContext.ProductStyles.RemoveRange(product.ProductStyles);
+                _dbContext.Products.Remove(product);
+                await _dbContext.SaveChangesAsync();
             }
+
             return product;
         }
 

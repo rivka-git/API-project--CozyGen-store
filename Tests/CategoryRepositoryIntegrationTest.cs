@@ -1,4 +1,4 @@
-using Repository;
+﻿using Repository;
 using Model;
 using Xunit;
 
@@ -19,7 +19,7 @@ namespace Tests
         {
             var category1 = new Category { Name = "Living Room", Description = "Living room furniture", ImageUrl = "living.jpg" };
             var category2 = new Category { Name = "Bedroom", Description = "Bedroom furniture", ImageUrl = "bedroom.jpg" };
-            
+
             _fixture.Context.Categories.Add(category1);
             _fixture.Context.Categories.Add(category2);
             await _fixture.Context.SaveChangesAsync();
@@ -44,13 +44,13 @@ namespace Tests
         [Fact]
         public async Task GetCategories_ReturnsCategories_WithAllProperties()
         {
-            var category = new Category 
-            { 
-                Name = "Office", 
-                Description = "Office furniture and supplies", 
-                ImageUrl = "office.jpg" 
+            var category = new Category
+            {
+                Name = "Office",
+                Description = "Office furniture and supplies",
+                ImageUrl = "office.jpg"
             };
-            
+
             _fixture.Context.Categories.Add(category);
             await _fixture.Context.SaveChangesAsync();
 

@@ -11,7 +11,7 @@ namespace Api.Controllers
     {
         private readonly ILogger<CategoryController> _logger;
         private readonly ICategoryService _s;
-        private readonly IUserServices _userService; 
+        private readonly IUserServices _userService;
 
         public CategoryController(ICategoryService i, ILogger<CategoryController> logger, IUserServices userService)
         {
@@ -22,14 +22,14 @@ namespace Api.Controllers
 
         // GET: api/<CategoryController>
         [HttpGet]
-        public async Task<IEnumerable<DtoCategory_Name_Id>> Get()
+        public async Task<IEnumerable<DtoCategoryNameId>> Get()
         {
             return await _s.GetCategories();
         }
 
         [HttpPost]
-        public async Task<ActionResult<DtoCategory_Name_Id>> Post(
-            [FromBody] DtocategoryAll categoryDto, 
+        public async Task<ActionResult<DtoCategoryNameId>> Post(
+            [FromBody] DtoCategoryAll categoryDto,
             [FromHeader] int userId,
             [FromHeader] string password)
         {
@@ -39,7 +39,7 @@ namespace Api.Controllers
                 return Forbid("גישה נדחתה: פעולה זו שמורה למנהלים בלבד");
             }
 
-            DtoCategory_Name_Id res = await _s.AddNewCategory(categoryDto);
+            DtoCategoryNameId res = await _s.AddNewCategory(categoryDto);
             if (res != null)
             {
                 return Ok(res);
@@ -48,7 +48,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<DtoCategory_Name_Id>> Delete(
+        public async Task<ActionResult<DtoCategoryNameId>> Delete(
             int id,
             [FromHeader] int userId,
             [FromHeader] string password)
@@ -59,7 +59,7 @@ namespace Api.Controllers
                 return Forbid("גישה נדחתה: מחיקת קטגוריה דורשת הרשאות מנהל");
             }
 
-            DtoCategory_Name_Id res = await _s.Delete(id);
+            DtoCategoryNameId res = await _s.Delete(id);
 
             if (res != null)
             {
@@ -95,7 +95,7 @@ namespace Api.Controllers
                 var fileName = $"{Guid.NewGuid()}_{image.FileName}";
                 using (var stream = new FileStream(Path.Combine(uploadsFolder, fileName), FileMode.Create))
                     await image.CopyToAsync(stream);
-                var categoryDto = new DtocategoryAll(
+                var categoryDto = new DtoCategoryAll(
                     name,
                     description,
                     $"/uploads/categories/{fileName}"

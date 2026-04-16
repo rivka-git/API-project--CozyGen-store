@@ -1,4 +1,4 @@
-using Repository;
+﻿using Repository;
 using Model;
 using Xunit;
 
@@ -19,7 +19,7 @@ namespace Tests
         {
             var user1 = new User { Email = "user1@test.com", PasswordHash = "hash1", FirstName = "John", LastName = "Doe", Role = "User", IsClubMember = false };
             var user2 = new User { Email = "user2@test.com", PasswordHash = "hash2", FirstName = "Jane", LastName = "Smith", Role = "Admin", IsClubMember = true };
-            
+
             _fixture.Context.Users.Add(user1);
             _fixture.Context.Users.Add(user2);
             await _fixture.Context.SaveChangesAsync();
@@ -60,13 +60,13 @@ namespace Tests
         public async Task AddNewUser_AddsUserSuccessfully()
         {
             var repository = new UserRepository(_fixture.Context);
-            var newUser = new User 
-            { 
-                Email = "newuser@test.com", 
-                PasswordHash = "newhash", 
-                FirstName = "New", 
-                LastName = "User", 
-                Role = "User", 
+            var newUser = new User
+            {
+                Email = "newuser@test.com",
+                PasswordHash = "newhash",
+                FirstName = "New",
+                LastName = "User",
+                Role = "User",
                 IsClubMember = false,
                 Phone = "1234567890",
                 Address = "123 Test St"
@@ -92,7 +92,7 @@ namespace Tests
 
             var repository = new UserRepository(_fixture.Context);
             var loginAttempt = new User { Email = "login@test.com", PasswordHash = "correcthash" };
-            
+
             var result = await repository.Login(loginAttempt);
 
             Assert.NotNull(result);
@@ -109,7 +109,7 @@ namespace Tests
 
             var repository = new UserRepository(_fixture.Context);
             var loginAttempt = new User { Email = "login@test.com", PasswordHash = "wronghash" };
-            
+
             var result = await repository.Login(loginAttempt);
 
             Assert.Null(result);
@@ -124,7 +124,7 @@ namespace Tests
 
             var repository = new UserRepository(_fixture.Context);
             var loginAttempt = new User { Email = "wrong@test.com", PasswordHash = "correcthash" };
-            
+
             var result = await repository.Login(loginAttempt);
 
             Assert.Null(result);
@@ -140,8 +140,8 @@ namespace Tests
             var repository = new UserRepository(_fixture.Context);
             user.FirstName = "Updated";
             user.IsClubMember = true;
-            
-            var result = await repository.update(user.UserId, user);
+
+            var result = await repository.Update(user.UserId, user);
 
             Assert.Equal("Updated", result.FirstName);
             Assert.True(result.IsClubMember);
@@ -156,13 +156,13 @@ namespace Tests
         public async Task AddNewUser_WithAllProperties_SavesCorrectly()
         {
             var repository = new UserRepository(_fixture.Context);
-            var newUser = new User 
-            { 
-                Email = "complete@test.com", 
-                PasswordHash = "hash123", 
-                FirstName = "Complete", 
-                LastName = "User", 
-                Role = "Admin", 
+            var newUser = new User
+            {
+                Email = "complete@test.com",
+                PasswordHash = "hash123",
+                FirstName = "Complete",
+                LastName = "User",
+                Role = "Admin",
                 IsClubMember = true,
                 Phone = "9876543210",
                 Address = "456 Complete Ave"

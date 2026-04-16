@@ -10,44 +10,48 @@ namespace Repository
 {
     public class OrderRepository : IOrderRepository
     {
-        myDBContext dbContext;
+        private readonly myDBContext _dbContext;
+
         public OrderRepository(myDBContext dbContext)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
         }
-        public async  Task<List<Order>> GetOrdersUser(int id)
-        { 
-             var r=await  dbContext.Orders
-                     .Include(o => o.OrderItems)
-                     .ThenInclude(oi => oi.Product)
-                     .Where(o => o.UserId == id)
-                     .OrderByDescending(o => o.OrderDate)
-                     .ToListAsync();
-            return r;
+
+        public async Task<List<Order>> GetOrdersUser(int id)
+        {
+            var orders = await _dbContext.Orders
+                    .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                    .Where(o => o.UserId == id)
+                    .OrderByDescending(o => o.OrderDate)
+                    .ToListAsync();
+            return orders;
 
 
         }
 
         public async Task<Order?> GetOrderById(int id)
         {
-            return await dbContext.Orders
+            return await _dbContext.Orders
                                    .Include(o => o.OrderItems)
                                    .ThenInclude(oi => oi.Product)
-                                   .FirstOrDefaultAsync(o => o.OrderId == id);  
+                                   .FirstOrDefaultAsync(o => o.OrderId == id);
         }
+
         public async Task<Order> AddNewOrder(Order order)
         {
             foreach (var orderItem in order.OrderItems)
-            { 
-                var product = await dbContext.Products.FindAsync(orderItem.ProductId);
+            {
+                var product = await _dbContext.Products.FindAsync(orderItem.ProductId);
 
                 if (product != null)
                 {
                     product.Stock -= orderItem.Quantity;
                 }
             }
-            await dbContext.Orders.AddAsync(order);
-            await dbContext.SaveChangesAsync();
+
+            await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
             return order;
         }
     }

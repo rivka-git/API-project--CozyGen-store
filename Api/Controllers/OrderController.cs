@@ -19,7 +19,7 @@ namespace Api.Controllers
 
 
         [HttpGet("user/{userId}")]
-        public async Task<ActionResult<List<DtoOrder_Id_UserId_Date_Sum_OrderItems>>> GetByUser(int userId)
+        public async Task<ActionResult<List<DtoOrderIdUserIdDateSumOrderItems>>> GetByUser(int userId)
         {
             var order = await _s.GetOrdersUser(userId);
             if (order != null)
@@ -32,9 +32,9 @@ namespace Api.Controllers
         // GET api/<OrderController>/5
         // GET api/<users>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<DtoOrder_Id_UserId_Date_Sum_OrderItems>> Get(int id)
+        public async Task<ActionResult<DtoOrderIdUserIdDateSumOrderItems>> Get(int id)
         {
-            DtoOrder_Id_UserId_Date_Sum_OrderItems order = await _s.GetOrderById(id);
+            DtoOrderIdUserIdDateSumOrderItems order = await _s.GetOrderById(id);
             if (order != null)
             {
                 return Ok(order);
@@ -44,10 +44,10 @@ namespace Api.Controllers
 
         // POST api/<users>
         [HttpPost]
-        public async Task<ActionResult<DtoOrder_Id_UserId_Date_Sum_OrderItems>> Post([FromBody] DtoOrder_Id_UserId_Date_Sum_OrderItems order)
+        public async Task<ActionResult<DtoOrderIdUserIdDateSumOrderItems>> Post([FromBody] DtoOrderIdUserIdDateSumOrderItems order)
         {
 
-            DtoOrder_Id_UserId_Date_Sum_OrderItems res = await _s.AddNewOrder(order);
+            DtoOrderIdUserIdDateSumOrderItems res = await _s.AddNewOrder(order);
             if (res != null)
             {
                 return CreatedAtAction(nameof(Get), new { id = res.OrderId }, res);

@@ -8,7 +8,7 @@ namespace Repository
         Task<List<Style>> GetStyles();
         Task<Style> AddNewStyle(Style style);
         Task<Style> Delete(int id);
-       
+
 
     }
 }

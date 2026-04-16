@@ -9,14 +9,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dto
 {
-    public record DtoCategory_Name_Id(
+    public record DtoCategoryNameId(
         int CategoryId,
         string Name
     );
-    //public class DtoCategory_Name_Id
+    //public class DtoCategoryNameId
     //{
     //    public int CategoryId { get; set; }
 
     //    public string Name { get; set; }
     //}
 }
+

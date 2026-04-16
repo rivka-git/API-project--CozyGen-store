@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using Repository;
 using Model;
@@ -90,7 +90,7 @@ namespace Tests
 
             var repository = new UserRepository(mockContext.Object);
             var newUser = new User { Email = "new@test.com", PasswordHash = "hash", FirstName = "New", LastName = "User", Role = "User", IsClubMember = false };
-            
+
             var result = await repository.AddNewUser(newUser);
 
             mockSet.Verify(m => m.AddAsync(newUser, default), Times.Once);
@@ -117,7 +117,7 @@ namespace Tests
 
             var repository = new UserRepository(mockContext.Object);
             var loginUser = new User { Email = "user@test.com", PasswordHash = "correcthash" };
-            
+
             var result = await repository.Login(loginUser);
 
             Assert.NotNull(result);
@@ -143,7 +143,7 @@ namespace Tests
 
             var repository = new UserRepository(mockContext.Object);
             var loginUser = new User { Email = "user@test.com", PasswordHash = "wronghash" };
-            
+
             var result = await repository.Login(loginUser);
 
             Assert.Null(result);
@@ -159,8 +159,8 @@ namespace Tests
 
             var repository = new UserRepository(mockContext.Object);
             var updatedUser = new User { UserId = 1, Email = "updated@test.com", PasswordHash = "hash", FirstName = "Updated", LastName = "User", Role = "User", IsClubMember = true };
-            
-            var result = await repository.update(1, updatedUser);
+
+            var result = await repository.Update(1, updatedUser);
 
             mockSet.Verify(m => m.Update(updatedUser), Times.Once);
             mockContext.Verify(m => m.SaveChangesAsync(default), Times.Once);

@@ -57,8 +57,6 @@ public class Program
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddHttpClient<IAiService, AiService>();
-        // ===== נוסף עבור הקריאה ל-AI - רישום שירות AI =====
-        builder.Services.AddHttpClient<IAiService, AiService>();
 
         var app = builder.Build();
 
@@ -79,7 +77,6 @@ public class Program
 
         app.UseRating();
 
-        // ===== נוסף עבור העלאת תמונות למנהל - מאפשר גישה לקבצים סטטיים =====
         app.UseStaticFiles();
 
         app.UseAuthorization();

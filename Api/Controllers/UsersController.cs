@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Specialized;
 using System.Text.Json;
 using Services;
-using static Api.Controllers.Userscontroller;
 using Dto;
 using Model;
 
@@ -14,42 +13,42 @@ namespace Api.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class Userscontroller : ControllerBase
+    public class UsersController : ControllerBase
     {
-        IUserServices _s;
-        private readonly ILogger<Userscontroller> _logger;
-        public Userscontroller(IUserServices i, ILogger<Userscontroller> logger)
+        private readonly IUserServices _userServices;
+        private readonly ILogger<UsersController> _logger;
+
+        public UsersController(IUserServices userServices, ILogger<UsersController> logger)
         {
             _logger = logger;
-            _s = i;
+            _userServices = userServices;
         }
 
         //GET: api/<users>
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
         {
-            return await _s.GetUsers();
+            return await _userServices.GetUsers();
         }
 
         // GET api/<users>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<DtoUser_Name_Gmail_Role_Id>> Get(int id)
+        public async Task<ActionResult<DtoUserNameEmailRoleId>> Get(int id)
         {
-            DtoUser_Name_Gmail_Role_Id user = await _s.GetUserById(id);
-            if (user!=null)
+            DtoUserNameEmailRoleId user = await _userServices.GetUserById(id);
+            if (user != null)
             {
                 return Ok(user);
-            }       
-          return NoContent();
+            }
+            return NoContent();
         }
         // POST api/<users>
 
         [HttpPost]
-        public async Task<ActionResult<DtoUser_Name_Gmail_Role_Id>> Post([FromBody] DtoUser_All user)
+        public async Task<ActionResult<DtoUserNameEmailRoleId>> Post([FromBody] DtoUserAll user)
         {
-
-            DtoUser_Name_Gmail_Role_Id res = await _s.AddNewUser(user);
-            if (res!=null)
+            DtoUserNameEmailRoleId res = await _userServices.AddNewUser(user);
+            if (res != null)
             {
                 return CreatedAtAction(nameof(Get), new { id = res.UserId }, res);
             }
@@ -59,14 +58,14 @@ namespace Api.Controllers
 
         //POST
         [HttpPost("Login")]
-        public async Task<ActionResult<DtoUser_Name_Gmail_Role_Id>> Login([FromBody] DtoUser_Gmail_Password user)
+        public async Task<ActionResult<DtoUserNameEmailRoleId>> Login([FromBody] DtoUserEmailPassword user)
         {
-            DtoUser_Name_Gmail_Role_Id res = await _s.Login(user);
-            if(res!=null)
+            DtoUserNameEmailRoleId res = await _userServices.Login(user);
+            if (res != null)
             {
                 _logger.LogInformation($"login attempted with user name,{user.Email} and password {user.PasswordHash}");
                 return Ok(res);
-            }  
+            }
             return NotFound();
         }
 
@@ -74,15 +73,16 @@ namespace Api.Controllers
 
         // PUT api/<users>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<DtoUser_Name_Gmail_Role_Id>> Put(int id, [FromBody] DtoUser_All value)
+        public async Task<ActionResult<DtoUserNameEmailRoleId>> Put(int id, [FromBody] DtoUserAll value)
         {
-            DtoUser_Name_Gmail_Role_Id res = await _s.update(id, value);
-            if (res!= null)
+            DtoUserNameEmailRoleId res = await _userServices.Update(id, value);
+            if (res != null)
             {
                 return CreatedAtAction(nameof(Get), new { id = res.UserId }, res);
             }
             else
-                return BadRequest();  
+                return BadRequest();
         }
     }
 }
+
