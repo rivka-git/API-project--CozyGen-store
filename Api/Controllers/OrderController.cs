@@ -1,9 +1,6 @@
 ﻿using Dto;
 using Microsoft.AspNetCore.Mvc;
 using Services;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
@@ -29,8 +26,6 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        // GET api/<OrderController>/5
-        // GET api/<users>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DtoOrderIdUserIdDateSumOrderItems>> Get(int id)
         {
@@ -42,7 +37,6 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        // POST api/<users>
         [HttpPost]
         public async Task<ActionResult<DtoOrderIdUserIdDateSumOrderItems>> Post([FromBody] DtoOrderIdUserIdDateSumOrderItems order)
         {

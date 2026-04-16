@@ -13,8 +13,3 @@ namespace Dto
     );
 
 }
-//public class DtoResultProduct
-//{
-//    public IEnumerable<DtoProductIdNameCategoryPriceDescImage> Products { get; set; }
-//    public int TotalCount { get; set; }
-//}

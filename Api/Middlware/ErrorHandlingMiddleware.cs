@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 namespace Api.Middlware
 {
-    // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
@@ -30,7 +29,6 @@ namespace Api.Middlware
         }
     }
 
-    // Extension method used to add the middleware to the HTTP request pipeline.
     public static class ErrorHandlingExtensions
     {
         public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder builder)

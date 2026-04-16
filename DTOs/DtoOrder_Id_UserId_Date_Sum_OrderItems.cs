@@ -31,13 +31,4 @@ namespace Dto
 
     }
 }
-//public record DtoOrderIdUserIdDateSumOrderItems(
-//    int OrderId,
-//    int UserId,
-//    DateTime OrderDate,
-//    string Status,
-//    decimal TotalPrice,
-//    ICollection<DtoOrderItemIdOrderIdProductIdQuantity> OrderItems
-//);
-
 

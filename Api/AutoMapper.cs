@@ -10,7 +10,6 @@ namespace Api
             CreateMap<Product, DtoProductIdNameCategoryPriceDescImage>();
             CreateMap<User, DtoUserEmailPassword>().ReverseMap();
             CreateMap<Style, DtoStyleIdName>().ReverseMap();
-            //CreateMap<PassWord, DtoPassword_Password_Strength>().ReverseMap();
             CreateMap<User, DtoUserAll>().ReverseMap();
             CreateMap<User, DtoUserNameEmailRoleId>().ReverseMap();
             CreateMap<Category, DtoCategoryNameId>().ReverseMap();
@@ -18,8 +17,6 @@ namespace Api
 
             CreateMap<Style, DtoStyleAll>().ReverseMap();
             CreateMap<DtoProductNameDescriptionPriceStockCategoryIdIsActiveStyleIds, Product>();
-            //CreateMap<Product, DtoProductIdNameCategoryPriceDescImage>().ForMember(dest => dest.Name,
-            //                                              opts => opts.MapFrom(src => src.Category.Name));
             CreateMap<Product, DtoProductIdNameCategoryPriceDescImage>()
                            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
             CreateMap<Order, DtoOrderIdUserIdDateSumOrderItems>()

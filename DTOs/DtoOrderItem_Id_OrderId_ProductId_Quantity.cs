@@ -12,18 +12,9 @@ namespace Dto
     {
         public int OrderItemId { get; set; }
         public int OrderId { get; set; }
-        public string ItemName { get; set; }
+        public string? ItemName { get; set; }
         public int? ProductId { get; set; }
         public int Quantity { get; set; }
         public decimal PriceAtPurchase { get; set; }
     }
 }
-
-//public record DtoOrderItemIdOrderIdProductIdQuantity(
-//    int OrderItemId,
-//    int OrderId,
-//    string ItemName,
-//    int? ProductId,
-//    int Quantity,
-//    decimal PriceAtPurchase
-//);

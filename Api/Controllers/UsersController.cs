@@ -24,25 +24,22 @@ namespace Api.Controllers
             _userServices = userServices;
         }
 
-        //GET: api/<users>
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
         {
             return await _userServices.GetUsers();
         }
 
-        // GET api/<users>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DtoUserNameEmailRoleId>> Get(int id)
         {
-            DtoUserNameEmailRoleId user = await _userServices.GetUserById(id);
+            DtoUserNameEmailRoleId? user = await _userServices.GetUserById(id);
             if (user != null)
             {
                 return Ok(user);
             }
             return NoContent();
         }
-        // POST api/<users>
 
         [HttpPost]
         public async Task<ActionResult<DtoUserNameEmailRoleId>> Post([FromBody] DtoUserAll user)
@@ -56,11 +53,10 @@ namespace Api.Controllers
                 return BadRequest();
         }
 
-        //POST
         [HttpPost("Login")]
         public async Task<ActionResult<DtoUserNameEmailRoleId>> Login([FromBody] DtoUserEmailPassword user)
         {
-            DtoUserNameEmailRoleId res = await _userServices.Login(user);
+            DtoUserNameEmailRoleId? res = await _userServices.Login(user);
             if (res != null)
             {
                 _logger.LogInformation($"login attempted with user name,{user.Email} and password {user.PasswordHash}");
@@ -70,8 +66,6 @@ namespace Api.Controllers
         }
 
 
-
-        // PUT api/<users>/5
         [HttpPut("{id}")]
         public async Task<ActionResult<DtoUserNameEmailRoleId>> Put(int id, [FromBody] DtoUserAll value)
         {

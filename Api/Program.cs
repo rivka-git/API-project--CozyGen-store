@@ -19,7 +19,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Load .env file
         DotNetEnv.Env.Load();
 
         builder.Host.UseNLog();
@@ -75,7 +74,6 @@ public class Program
 
         app.UseErrorHandling();
 
-        app.UseRating();
 
         app.UseStaticFiles();
 
